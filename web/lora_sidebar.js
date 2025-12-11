@@ -2363,7 +2363,7 @@ class LoraSidebar {
                                 if (node.type === "LoraLoader" || node.type === "Power Lora Loader (rgthree)") {
                                     this.updateLoraNode(node, loraData, nodeData);
                                     debug.log("Successfully updated node");
-                                } else if (nodeData.trainedWords?.length > 0) {
+                                } else if (nodeData.trainedWords?.length > 0 || nodeData.filename) {
                                     // Check if node has any text widgets
                                     const textWidget = node.widgets?.find(w => 
                                         w.name === "text" ||
@@ -2378,7 +2378,7 @@ class LoraSidebar {
 
                                         // Handle trained words if they exist
                                         if (nodeData.trainedWords?.length > 0) {
-                                            trainedWords = nodeData.trainedWords[0];
+                                            trainedWords = nodeData.trainedWords.join(', ');
                                         }
 
                                         // If a1111Style is enabled, prefix with LoRA syntax
@@ -2390,7 +2390,7 @@ class LoraSidebar {
                                             const loraPart = loraPath ? `${loraPath}${loraName}` : loraName;  // Add forward slash between path and name
                                             const weight = nodeData.reco_weight ?? 1;
                                             const weightStr = weight.toString().includes('.') ? weight.toFixed(2) : weight;
-                                            trainedWords = `<lora:${loraPart}:${weightStr}>, ${trainedWords}`;
+                                            trainedWords = trainedWords ? `<lora:${loraPart}:${weightStr}>, ${trainedWords}` : `<lora:${loraPart}:${weightStr}>`;
                                         }
                     
                                         if (currentText.length > 0) {
